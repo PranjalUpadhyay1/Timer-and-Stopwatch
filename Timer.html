@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="timer.css">
+  <title>Document</title>
+</head>
+<body>
+  <div class="nav">
+    <a href="Timer.html" id="timer">Timer</a>
+    <a href="stopwatch.html" id="stopwatch">Stopwatch</a>
+  </div>
+  <div class="container">
+    <div class="stopwatch">
+        <h1>Timer</h1>
+        <div class="stopwatch-display">
+            00 : 00 : 00
+        </div>
+        <div class="buttons">
+            <button id="set">Set time</button>
+            <button id="start">Start</button>
+            <button id="reset">Reset</button>
+        </div>
+    </div>
+</div>
+
+<script>
+  let hours , minutes ,seconds
+  let start =0;
+  let int = null;
+  let display = document.querySelector(".stopwatch-display");
+  let [sec, min, hr] = [0, 0, 0 ];
+  document.getElementById("set").addEventListener("click", ()=>{
+    let time = window.prompt("Please enter time in HH:MM:SS format", "0");
+    hours = parseInt(time.toString().split(":")[0]);
+    minutes = parseInt(time.toString().split(":")[1]);
+    seconds = parseInt(time.toString().split(":")[2]);
+
+    display.innerHTML = `${hours} : ${minutes} : ${seconds}`;
+})
+
+document.getElementById("start").addEventListener("click", ()=>{
+    if(start===0){
+        document.getElementById("start").innerHTML = "Pause";
+        if(int != null){
+            clearInterval(int);
+        }
+        int = setInterval(displayTimer, 1000);
+        start=1;
+    }
+    else if(start===1){
+        document.getElementById("start").innerHTML = "Start";
+        clearInterval(int);
+        start=0;
+    }
+    
+});
+
+document.getElementById("reset").addEventListener("click",()=>{
+    document.getElementById("start").innerHTML = "Start";
+    clearInterval(int);
+    start=0;
+    [seconds, minutes, hours] = [0, 0, 0];
+    display.innerHTML = "00 : 00 : 00"
+});
+
+function displayTimer() {
+  if (hours === 0 && minutes === 0 && seconds === 0) {
+    alert("Timer is up");
+    clearInterval(int);
+    return;
+  }
+
+  seconds--;
+
+  if (seconds === -1) {
+    seconds = 59;
+    minutes--;
+
+    if (minutes === -1) {
+      minutes = 59;
+      hours--;
+    }
+  }
+
+  h = hours < 10 ? "0" + hours : hours;
+  m = minutes < 10 ? "0" + minutes : minutes;
+  s = seconds < 10 ? "0" + seconds : seconds;
+  display.innerHTML = `${h} : ${m} : ${s}`;
+}
+
+
+</script>
+</body>
+</html>
